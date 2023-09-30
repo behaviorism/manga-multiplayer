@@ -1,7 +1,7 @@
 {
   "name": "electron-react-typescript-boilerplate",
   "version": "1.0.0",
-  "main": "./dist/main/main.js",
+  "main": "./src/main/main.ts",
   "scripts": {
     "start:main": "cross-env NODE_ENV=development PORT=1212 electronmon -r ts-node/register/transpile-only .",
     "start:renderer": "cross-env NODE_ENV=development PORT=1212 webpack serve --config ./configs/webpack.config.renderer.ts",
@@ -21,6 +21,7 @@
     "@types/react-dom": "^18.2.8",
     "@types/webpack-node-externals": "^3.0.2",
     "browserify-fs": "^1.0.0",
+    "concurrently": "^8.2.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "electron": "^26.2.4",

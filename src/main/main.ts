@@ -1,24 +1,17 @@
-import path from "path";
-import { app, BrowserWindow, shell } from "electron";
+import { app, BrowserWindow, Menu, shell } from "electron";
+import * as Utils from "./helpers/utils";
+import * as Ipc from "./handlers/ipc";
 
 let mainWindow: BrowserWindow | null = null;
 
-const resolveHtmlPath = (htmlFileName: string) => {
-  if (process.env.NODE_ENV === "development") {
-    const port = process.env.PORT || 1212;
-    const url = new URL(`http://localhost:${port}`);
-    url.pathname = htmlFileName;
-    return url.href;
-  }
-  return `file://${path.resolve(__dirname, "..", "renderer", htmlFileName)}`;
-};
-const getAssetPath = (...paths: string[]): string => {
-  return path.join(
-    app.isPackaged
-      ? path.join(process.resourcesPath, "assets")
-      : path.join(__dirname, "..", "..", "assets"),
-    ...paths
-  );
+const initApp = () => {
+  createWindow();
+
+  Ipc.init();
+
+  app.on("activate", () => {
+    if (mainWindow === null) createWindow();
+  });
 };
 
 const createWindow = () => {
@@ -26,7 +19,7 @@ const createWindow = () => {
     show: false,
     width: 600,
     height: 800,
-    icon: getAssetPath("icon.png"),
+    icon: Utils.getAssetPath("icon.png"),
     frame: false,
     webPreferences: {
       nodeIntegration: true,
@@ -34,7 +27,7 @@ const createWindow = () => {
     },
   });
 
-  mainWindow.loadURL(resolveHtmlPath("index.html"));
+  mainWindow.loadURL(Utils.resolveHtmlPath("index.html"));
 
   mainWindow.on("ready-to-show", () => {
     if (!mainWindow) {
@@ -45,6 +38,8 @@ const createWindow = () => {
   });
 
   mainWindow.on("closed", () => (mainWindow = null));
+
+  Menu.setApplicationMenu(null);
 
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
@@ -58,12 +53,4 @@ app.on("window-all-closed", () => {
   }
 });
 
-app
-  .whenReady()
-  .then(() => {
-    createWindow();
-    app.on("activate", () => {
-      if (mainWindow === null) createWindow();
-    });
-  })
-  .catch(console.log);
+app.whenReady().then(initApp).catch(console.log);
