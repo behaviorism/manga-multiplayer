@@ -1,0 +1,38 @@
+{
+  "name": "electron-react-typescript-boilerplate",
+  "version": "1.0.0",
+  "main": "./src/main/index.ts",
+  "scripts": {
+    "start:main": "cross-env NODE_ENV=development PORT=1212 electronmon -r ts-node/register/transpile-only .",
+    "start:renderer": "cross-env NODE_ENV=development PORT=1212 webpack serve --config ./configs/webpack.config.renderer.ts"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0"
+  },
+  "devDependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "@types/react": "^18.2.23",
+    "@types/react-dom": "^18.2.8",
+    "@types/webpack-node-externals": "^3.0.2",
+    "browserify-fs": "^1.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.8.1",
+    "electron": "^26.2.4",
+    "electronmon": "^2.0.2",
+    "html-webpack-plugin": "^5.5.3",
+    "react-refresh": "^0.14.0",
+    "sass": "^1.68.0",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

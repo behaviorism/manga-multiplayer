@@ -1,0 +1,36 @@
+.mac-buttons {
+  width: 50px;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mac-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: grey;
+  -webkit-app-region: no-drag;
+  vertical-align: baseline;
+}
+
+svg {
+  display: block;
+  visibility: hidden;
+}
+
+.mac-buttons:hover svg {
+  visibility: visible;
+}
+
+.mac-close {
+  background: #fc615d;
+}
+
+.mac-minimize {
+  background: #fdbc40;
+}
+
+.mac-maximize {
+  background: #34c749;
+}
