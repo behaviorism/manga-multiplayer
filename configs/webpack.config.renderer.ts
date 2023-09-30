@@ -6,18 +6,18 @@ import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import nodeExternals from "webpack-node-externals";
 
+const isDev = process.env.NODE_ENV === "development";
 const root = path.join(__dirname, "..");
 
 const configuration: webpack.Configuration = {
-  devtool: "inline-source-map",
-  mode: "development",
+  mode: isDev ? "development" : "production",
   target: ["web", "electron-renderer"],
   externals: [nodeExternals()],
   entry: path.join(root, "src", "renderer", "index.tsx"),
   output: {
     path: path.join(root, "dist", "renderer"),
-    publicPath: "/",
-    filename: "renderer.dev.js",
+    publicPath: "./",
+    filename: "renderer.js",
     library: {
       type: "umd",
     },
@@ -69,7 +69,7 @@ const configuration: webpack.Configuration = {
     plugins: [new TsconfigPathsPlugins()],
   },
   plugins: [
-    new ReactRefreshWebpackPlugin(),
+    ...(isDev ? [new ReactRefreshWebpackPlugin()] : []),
     new HtmlWebpackPlugin({
       filename: path.join("index.html"),
       template: path.join(root, "src", "renderer", "index.html"),
@@ -80,15 +80,19 @@ const configuration: webpack.Configuration = {
       },
     }),
   ],
-  devServer: {
-    port: process.env.PORT,
-    compress: true,
-    hot: true,
-    headers: { "Access-Control-Allow-Origin": "*" },
-    static: {
-      publicPath: "/",
-    },
-  },
+  ...(isDev
+    ? {
+        devServer: {
+          port: process.env.PORT,
+          compress: true,
+          hot: true,
+          headers: { "Access-Control-Allow-Origin": "*" },
+          static: {
+            publicPath: "/",
+          },
+        },
+      }
+    : {}),
 };
 
 export default configuration;

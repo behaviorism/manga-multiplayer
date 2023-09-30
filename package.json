@@ -1,10 +1,14 @@
 {
   "name": "electron-react-typescript-boilerplate",
   "version": "1.0.0",
-  "main": "./src/main/index.ts",
+  "main": "./dist/main/main.js",
   "scripts": {
     "start:main": "cross-env NODE_ENV=development PORT=1212 electronmon -r ts-node/register/transpile-only .",
-    "start:renderer": "cross-env NODE_ENV=development PORT=1212 webpack serve --config ./configs/webpack.config.renderer.ts"
+    "start:renderer": "cross-env NODE_ENV=development PORT=1212 webpack serve --config ./configs/webpack.config.renderer.ts",
+    "build": "concurrently \"yarn run build:main\" \"yarn run build:renderer\"",
+    "build:main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.ts",
+    "build:renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.ts",
+    "package": "yarn run build && electron-builder build"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -20,6 +24,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "electron": "^26.2.4",
+    "electron-builder": "^24.6.4",
     "electronmon": "^2.0.2",
     "html-webpack-plugin": "^5.5.3",
     "react-refresh": "^0.14.0",
@@ -34,5 +39,56 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
     "webpack-node-externals": "^3.0.0"
+  },
+  "build": {
+    "productName": "ElectronReactTypeScriptBoilerplate",
+    "appId": "com.electron.ElectronReactTypeScriptBoilerplate",
+    "asar": true,
+    "asarUnpack": "**\\*.{node,dll}",
+    "files": [
+      "dist",
+      "node_modules",
+      "package.json"
+    ],
+    "mac": {
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      },
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "extraResources": [
+      "./assets/**"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "builds"
+    }
   }
 }

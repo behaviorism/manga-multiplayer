@@ -1,6 +1,6 @@
 .mac-buttons {
-  width: 50px;
-  margin: 10px;
+  width: 53px;
+  margin: 12px 10px;
   display: flex;
   justify-content: space-between;
 }
