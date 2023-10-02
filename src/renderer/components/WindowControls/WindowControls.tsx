@@ -1,15 +1,10 @@
 import { ipcRenderer } from "electron";
+import { IpcMessage, WindowControl } from "../../../types";
 import "./WindowControls.css";
-
-export enum WindowControl {
-  Close,
-  Minimize,
-  Maximize,
-}
 
 const WindowControls = () => {
   const sendControl = (control: WindowControl) =>
-    ipcRenderer.send("windowControl", control);
+    ipcRenderer.send(IpcMessage.WindowControl, control);
 
   ipcRenderer.send("windowControl");
   return (

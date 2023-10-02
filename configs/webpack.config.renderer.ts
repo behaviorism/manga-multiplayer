@@ -4,19 +4,20 @@ import webpack from "webpack";
 import TsconfigPathsPlugins from "tsconfig-paths-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import nodeExternals from "webpack-node-externals";
+import webpackNodeExternals from "webpack-node-externals";
 
 const isDev = process.env.NODE_ENV === "development";
 const root = path.join(__dirname, "..");
 
 const configuration: webpack.Configuration = {
+  devtool: isDev ? "inline-source-map" : false,
   mode: isDev ? "development" : "production",
+  externals: [webpackNodeExternals()],
   target: ["web", "electron-renderer"],
-  externals: [nodeExternals()],
   entry: path.join(root, "src", "renderer", "index.tsx"),
   output: {
     path: path.join(root, "dist", "renderer"),
-    publicPath: "./",
+    publicPath: isDev ? "/" : "./",
     filename: "renderer.js",
     library: {
       type: "umd",

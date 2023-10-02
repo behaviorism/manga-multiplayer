@@ -46,6 +46,9 @@
     "appId": "com.electron.ElectronReactTypeScriptBoilerplate",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
+    "extraMetadata": {
+      "main": "./dist/main/main.js"
+    },
     "files": [
       "dist",
       "node_modules",

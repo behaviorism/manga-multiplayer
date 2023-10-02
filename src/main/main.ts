@@ -53,4 +53,6 @@ app.on("window-all-closed", () => {
   }
 });
 
+import fs from "fs";
+
 app.whenReady().then(initApp).catch(console.log);
