@@ -5,7 +5,10 @@ const init = () => {
   ipcMain.on(IpcMessage.WindowControl, handleWindowControl);
 };
 
-const handleWindowControl = (_: any, control: WindowControl) => {
+const handleWindowControl = (
+  _: Electron.IpcMainEvent,
+  control: WindowControl
+) => {
   const window = BrowserWindow.getFocusedWindow();
 
   if (!window) {
