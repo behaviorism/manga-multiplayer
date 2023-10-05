@@ -1,5 +1,5 @@
 {
-  "name": "electron-react-typescript-boilerplate",
+  "name": "manga-multiplayer",
   "version": "1.0.0",
   "main": "./src/main/main.ts",
   "scripts": {
@@ -45,8 +45,8 @@
     "webpack-node-externals": "^3.0.0"
   },
   "build": {
-    "productName": "ElectronReactTypeScriptBoilerplate",
-    "appId": "com.electron.ElectronReactTypeScriptBoilerplate",
+    "productName": "Manga Multiplayer",
+    "appId": "com.electron.MangaMultiplayer",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "extraMetadata": {
