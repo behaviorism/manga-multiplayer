@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, shell } from "electron";
+import path from "path";
 import * as Utils from "./helpers/utils";
 import * as Ipc from "./handlers/ipc";
 
@@ -22,8 +23,7 @@ const createWindow = () => {
     icon: Utils.getAssetPath("icon.png"),
     frame: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 

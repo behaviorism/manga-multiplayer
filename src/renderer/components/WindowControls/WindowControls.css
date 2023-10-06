@@ -1,11 +1,4 @@
-.mac-buttons {
-  width: 53px;
-  margin: 12px 10px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.mac-button {
+.window-control {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -14,23 +7,11 @@
   vertical-align: baseline;
 }
 
-svg {
+.window-control > svg {
   display: block;
   visibility: hidden;
 }
 
-.mac-buttons:hover svg {
+.window-controls:hover svg {
   visibility: visible;
-}
-
-.mac-close {
-  background: #fc615d;
-}
-
-.mac-minimize {
-  background: #fdbc40;
-}
-
-.mac-maximize {
-  background: #34c749;
 }

@@ -1,8 +1,13 @@
 import { ipcMain, BrowserWindow } from "electron";
-import { IpcMessage, WindowControl } from "../../types";
+import { IpcMessage, Settings, WindowControl } from "../../types";
+import { store } from "./store";
 
 const init = () => {
   ipcMain.on(IpcMessage.WindowControl, handleWindowControl);
+  ipcMain.handle(IpcMessage.GetSettings, () => store.store);
+  ipcMain.on(IpcMessage.SetSettings, (_, settings: Settings) => {
+    store.store = settings;
+  });
 };
 
 const handleWindowControl = (

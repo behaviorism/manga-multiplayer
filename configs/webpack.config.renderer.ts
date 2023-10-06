@@ -4,7 +4,6 @@ import webpack from "webpack";
 import TsconfigPathsPlugins from "tsconfig-paths-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import webpackNodeExternals from "webpack-node-externals";
 
 const isDev = process.env.NODE_ENV === "development";
 const root = path.join(__dirname, "..");
@@ -12,7 +11,6 @@ const root = path.join(__dirname, "..");
 const configuration: webpack.Configuration = {
   devtool: isDev ? "inline-source-map" : false,
   mode: isDev ? "development" : "production",
-  externals: [webpackNodeExternals()],
   target: ["web", "electron-renderer"],
   entry: path.join(root, "src", "renderer", "index.tsx"),
   output: {
