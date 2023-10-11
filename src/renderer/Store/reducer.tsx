@@ -1,14 +1,14 @@
 import { IpcMessage, Manga, Settings } from "../../types";
 
 export enum ActionType {
-  AddManga,
+  AddOrEditManga,
   RemoveManga,
   SetBookmark,
   SetSettings,
 }
 
-export interface AddMangaAction {
-  type: ActionType.AddManga;
+export interface AddOrEditMangaAction {
+  type: ActionType.AddOrEditManga;
   manga: Manga;
 }
 
@@ -20,10 +20,7 @@ export interface RemoveMangaAction {
 export interface SetBookmarkAction {
   type: ActionType.SetBookmark;
   name: string;
-  bookmark: {
-    chapter: string;
-    page: string;
-  };
+  bookmark: Manga["bookmark"];
 }
 
 export interface SetSettingsAction {
@@ -32,14 +29,23 @@ export interface SetSettingsAction {
 }
 
 export type Action =
-  | AddMangaAction
+  | AddOrEditMangaAction
   | RemoveMangaAction
   | SetBookmarkAction
   | SetSettingsAction;
 
-const addManga = (state: Settings, action: AddMangaAction) => {
+const addOrEditManga = (state: Settings, action: AddOrEditMangaAction) => {
   const newState = { ...state };
-  newState.mangas.unshift(action.manga);
+  const mangaIndex = newState.mangas.findIndex(
+    (manga) => manga.name === action.manga.name
+  );
+
+  if (mangaIndex > -1) {
+    newState.mangas[mangaIndex] = action.manga;
+  } else {
+    newState.mangas.unshift(action.manga);
+  }
+
   return newState;
 };
 
@@ -72,8 +78,8 @@ export const reducer: React.Reducer<Settings, Action> = (
   var newState: Settings;
 
   switch (action.type) {
-    case ActionType.AddManga:
-      newState = addManga(state, action);
+    case ActionType.AddOrEditManga:
+      newState = addOrEditManga(state, action);
       break;
     case ActionType.RemoveManga:
       newState = removeManga(state, action);

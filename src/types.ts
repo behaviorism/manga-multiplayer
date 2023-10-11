@@ -2,6 +2,8 @@ export enum IpcMessage {
   WindowControl = "windowControl",
   GetSettings = "getSettings",
   SetSettings = "setSettings",
+  FetchManga = "fetchManga",
+  FetchMangaPages = "fetchMangaPages",
 }
 
 export enum WindowControl {
@@ -15,16 +17,37 @@ export interface Settings {
 }
 
 export enum MangaSource {
-  Mangakakalot,
-  Mangatoto,
+  MangaNato,
+  MangaToto,
 }
 
 export interface Manga {
   name: string;
+  cover_url: string;
   url: string;
   source: MangaSource;
+  chapters: Array<string>;
   bookmark: {
-    chapter: string;
-    page: string;
+    chapterIndex: number;
+    pageIndex: number;
   };
+}
+
+export type WebSocketMessage =
+  | WebSocketCurrentMangaMessage
+  | WebSocketWaitingMessage;
+
+export enum WebSocketMessageType {
+  CurrentManga,
+  Waiting,
+}
+
+export interface WebSocketCurrentMangaMessage {
+  type: WebSocketMessageType.CurrentManga;
+  manga: Manga | null;
+}
+
+export interface WebSocketWaitingMessage {
+  type: WebSocketMessageType.Waiting;
+  waiting: boolean;
 }

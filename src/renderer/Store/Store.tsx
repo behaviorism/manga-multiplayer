@@ -23,7 +23,9 @@ export const StoreProvider = ({ children }: React.PropsWithChildren) => {
   useEffect(() => {
     window.ipc
       .invoke(IpcMessage.GetSettings)
-      .then((loadedSettings) => setSettings(loadedSettings, dispatch));
+      .then((loadedSettings: Settings) =>
+        setSettings(loadedSettings, dispatch)
+      );
   }, []);
 
   return (

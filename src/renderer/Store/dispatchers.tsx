@@ -1,19 +1,18 @@
+import { Manga, Settings } from "../../types";
 import {
   Action,
   ActionType,
-  AddMangaAction,
   RemoveMangaAction,
   SetBookmarkAction,
-  SetSettingsAction,
 } from "./reducer";
 
-export const addManga = (
-  action: Omit<AddMangaAction, "type">,
+export const addOrEditManga = (
+  manga: Manga,
   dispatch: React.Dispatch<Action>
 ) => {
   dispatch({
-    type: ActionType.AddManga,
-    ...action,
+    type: ActionType.AddOrEditManga,
+    manga,
   });
 };
 
@@ -28,21 +27,23 @@ export const removeManga = (
 };
 
 export const setBookmark = (
-  action: Omit<SetBookmarkAction, "type">,
+  name: string,
+  bookmark: SetBookmarkAction["bookmark"],
   dispatch: React.Dispatch<Action>
 ) => {
   dispatch({
     type: ActionType.SetBookmark,
-    ...action,
+    name,
+    bookmark,
   });
 };
 
 export const setSettings = (
-  action: Omit<SetSettingsAction, "type">,
+  settings: Settings,
   dispatch: React.Dispatch<Action>
 ) => {
   dispatch({
     type: ActionType.SetSettings,
-    ...action,
+    settings,
   });
 };

@@ -1,13 +1,20 @@
 import { ipcMain, BrowserWindow } from "electron";
 import { IpcMessage, Settings, WindowControl } from "../../types";
 import { store } from "./store";
+import { scrapeManga, scrapeMangaPages } from "../helpers/scraper";
 
 const init = () => {
   ipcMain.on(IpcMessage.WindowControl, handleWindowControl);
   ipcMain.handle(IpcMessage.GetSettings, () => store.store);
-  ipcMain.on(IpcMessage.SetSettings, (_, settings: Settings) => {
-    store.store = settings;
-  });
+  ipcMain.on(
+    IpcMessage.SetSettings,
+    (_, settings: Settings) => (store.store = settings)
+  );
+  ipcMain.handle(IpcMessage.FetchManga, (_, url: string) => scrapeManga(url));
+  ipcMain.handle(
+    IpcMessage.FetchMangaPages,
+    (_, url: string, chapter: string) => scrapeMangaPages(url, chapter)
+  );
 };
 
 const handleWindowControl = (
