@@ -1,10 +1,16 @@
 import { IpcMessage, Manga, Settings } from "../../types";
 
 export enum ActionType {
+  SetRecentManga,
   AddOrEditManga,
   RemoveManga,
   SetBookmark,
   SetSettings,
+}
+
+export interface SetRecentMangaAction {
+  type: ActionType.SetRecentManga;
+  manga: Manga;
 }
 
 export interface AddOrEditMangaAction {
@@ -14,7 +20,7 @@ export interface AddOrEditMangaAction {
 
 export interface RemoveMangaAction {
   type: ActionType.RemoveManga;
-  name: string;
+  manga: Manga;
 }
 
 export interface SetBookmarkAction {
@@ -29,19 +35,38 @@ export interface SetSettingsAction {
 }
 
 export type Action =
+  | SetRecentMangaAction
   | AddOrEditMangaAction
   | RemoveMangaAction
   | SetBookmarkAction
   | SetSettingsAction;
 
+const setRecentManga = (state: Settings, action: SetRecentMangaAction) => {
+  const newState = { ...state };
+
+  const mangaIndex = newState.mangas.findIndex(
+    (manga) => manga.name === action.manga.name
+  );
+
+  const manga = newState.mangas.splice(mangaIndex, 1)[0];
+
+  newState.mangas.unshift(manga);
+
+  return newState;
+};
+
 const addOrEditManga = (state: Settings, action: AddOrEditMangaAction) => {
   const newState = { ...state };
+
   const mangaIndex = newState.mangas.findIndex(
     (manga) => manga.name === action.manga.name
   );
 
   if (mangaIndex > -1) {
-    newState.mangas[mangaIndex] = action.manga;
+    newState.mangas[mangaIndex] = {
+      ...action.manga,
+      bookmark: newState.mangas[mangaIndex].bookmark,
+    };
   } else {
     newState.mangas.unshift(action.manga);
   }
@@ -51,7 +76,10 @@ const addOrEditManga = (state: Settings, action: AddOrEditMangaAction) => {
 
 const removeManga = (state: Settings, action: RemoveMangaAction) => {
   const newState = { ...state };
-  const manga = newState.mangas.find((manga) => manga.name === action.name);
+
+  const manga = newState.mangas.find(
+    (manga) => manga.name === action.manga.name
+  );
 
   if (manga) {
     newState.mangas.splice(newState.mangas.indexOf(manga), 1);
@@ -62,6 +90,7 @@ const removeManga = (state: Settings, action: RemoveMangaAction) => {
 
 const setBookmark = (state: Settings, action: SetBookmarkAction) => {
   const newState = { ...state };
+
   const manga = newState.mangas.find((manga) => manga.name === action.name);
 
   if (manga) {
@@ -78,6 +107,9 @@ export const reducer: React.Reducer<Settings, Action> = (
   var newState: Settings;
 
   switch (action.type) {
+    case ActionType.SetRecentManga:
+      newState = setRecentManga(state, action);
+      break;
     case ActionType.AddOrEditManga:
       newState = addOrEditManga(state, action);
       break;

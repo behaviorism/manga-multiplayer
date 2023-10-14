@@ -1,9 +1,45 @@
 export enum IpcMessage {
+  /* Generic messages */
   WindowControl = "windowControl",
+
+  /* Settings messages */
+
+  // Renderer: Get full settings
   GetSettings = "getSettings",
+  // Renderer: Set full settings
   SetSettings = "setSettings",
+
+  /* Manga messages */
+
+  // Renderer: fetch manga
   FetchManga = "fetchManga",
+  // Renderer: fetch manga pages
   FetchMangaPages = "fetchMangaPages",
+  // Main: get manga currently being read in renderer
+  GetCurrentManga = "getCurrentManga",
+
+  /* WebSocket messages */
+
+  // Renderer: start websocket server in main
+  StartWebSocketServer = "startWebSocketServer",
+  // Renderer: stop websocket
+  StopWebSocketServer = "stopWebSocketServer",
+  // Main: new client connected
+  WebSocketConnected = "webSocketConnected",
+  // Main: websocket error
+  WebSocketError = "webSocketError",
+  // Main: websocket closed
+  WebSocketClose = "webSocketClose",
+  // Main: connection to websocket closed
+  WebSocketClientClose = "webSocketClientClose",
+  // Renderer: send waiting state to clients (if host)/websocket (if client)
+  WebSocketWaiting = "webSocketWaiting",
+  // Renderer: set waiting state of all clients
+  SetOthersWaiting = "setOthersWaiting",
+  // Main: get waiting state of host
+  GetWaiting = "getWaiting",
+  // fRenderer: send manga currently being read to clients
+  WebSocketCurrentManga = "webSocketCurrentManga",
 }
 
 export enum WindowControl {
@@ -49,5 +85,5 @@ export interface WebSocketCurrentMangaMessage {
 
 export interface WebSocketWaitingMessage {
   type: WebSocketMessageType.Waiting;
-  waiting: boolean;
+  waiting: Array<boolean>;
 }

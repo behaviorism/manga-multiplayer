@@ -1,5 +1,5 @@
-import { Manga, MangaSource } from "../../types";
 import htmlParser from "node-html-parser";
+import { Manga, MangaSource } from "../../types";
 
 export const scrapeManga = (url: string) => {
   if (url.includes("manganato.com")) {
@@ -9,7 +9,12 @@ export const scrapeManga = (url: string) => {
 };
 
 const scrapeMangaNato = async (url: string): Promise<Manga> => {
-  const res = await fetch(url);
+  const _url = url.replace(
+    "https://manganato.com",
+    "https://chapmanganato.com"
+  );
+
+  const res = await fetch(_url);
 
   const text = await res.text();
 
@@ -23,10 +28,11 @@ const scrapeMangaNato = async (url: string): Promise<Manga> => {
   const cover_url = html.querySelector(".info-image img")!.getAttribute("src")!;
   const chapters = html
     .querySelectorAll(".panel-story-chapter-list a")
-    .map((element) => element.getAttribute("href")!.split("/chapter-")[1]);
+    .map((element) => element.getAttribute("href")!.split("/chapter-")[1])
+    .reverse();
 
   return {
-    url,
+    url: _url,
     name,
     cover_url,
     chapters,
@@ -55,5 +61,7 @@ const scrapePagesMangaNato = async (url: string, chapter: string) => {
 
   return html
     .querySelectorAll(".container-chapter-reader img")
-    .map((element) => element.getAttribute("src"));
+    .map((element) =>
+      element.getAttribute("src")!.replace("https://", "manganato://")
+    );
 };

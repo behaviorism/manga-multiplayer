@@ -1,12 +1,17 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import WindowControls from "./Components/WindowControls/WindowControls";
 import Link from "./Pages/Link/Link";
 import Connect from "./Pages/Connect/Connect";
+import Host from "./Pages/Host/Host";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/connect",
     element: <Connect />,
+  },
+  {
+    path: "/host",
+    element: <Host />,
   },
   {
     path: "/*",
@@ -16,10 +21,10 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <>
+    <div className="w-full h-full flex flex-col items-center bg-gray-900">
       <WindowControls />
       <RouterProvider router={router} />
-    </>
+    </div>
   );
 };
 

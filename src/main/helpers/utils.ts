@@ -1,15 +1,17 @@
 import { app } from "electron";
 import path from "path";
 
-const resolveHtmlPath = (htmlFileName: string) => {
+export const resolveHtmlPath = (htmlFileName: string) => {
   if (process.env.NODE_ENV === "development") {
-    return `http://localhost:${process.env.PORT}/${htmlFileName}`;
+    return `http://localhost:${
+      parseInt(process.env.PORT!) + 1
+    }/${htmlFileName}`;
   }
 
   return `file://${path.resolve(__dirname, "..", "renderer", htmlFileName)}`;
 };
 
-const getAssetPath = (...paths: string[]): string => {
+export const getAssetPath = (...paths: string[]): string => {
   return path.join(
     app.isPackaged
       ? path.join(process.resourcesPath, "assets")
@@ -17,5 +19,3 @@ const getAssetPath = (...paths: string[]): string => {
     ...paths
   );
 };
-
-export { resolveHtmlPath, getAssetPath };

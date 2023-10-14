@@ -1,9 +1,10 @@
-import { app, BrowserWindow, Menu, shell } from "electron";
+import { app, BrowserWindow, Menu, net, protocol, shell } from "electron";
 import path from "path";
-import * as Utils from "./helpers/utils";
-import * as Ipc from "./handlers/ipc";
+import Ipc from "./handlers/ipc";
+import WebSocketIpc from "./handlers/ipc/websocket";
+import { getAssetPath, resolveHtmlPath } from "./helpers/utils";
 
-let mainWindow: BrowserWindow | null = null;
+export let mainWindow: BrowserWindow | null = null;
 
 const initApp = () => {
   createWindow();
@@ -13,21 +14,26 @@ const initApp = () => {
   app.on("activate", () => {
     if (mainWindow === null) createWindow();
   });
+
+  protocol.handle("manganato", (request) => {
+    request.headers.set("referer", "https://chapmanganato.com/");
+    return net.fetch(request.url.replace("manganato://", "https://"), request);
+  });
 };
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     show: false,
-    width: 600,
-    height: 800,
-    icon: Utils.getAssetPath("icon.png"),
+    maxWidth: 600,
+    maxHeight: 800,
+    icon: getAssetPath("icon.png"),
     frame: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  mainWindow.loadURL(Utils.resolveHtmlPath("index.html"));
+  mainWindow.loadURL(resolveHtmlPath("index.html"));
 
   mainWindow.on("ready-to-show", () => {
     if (!mainWindow) {
@@ -37,7 +43,10 @@ const createWindow = () => {
     mainWindow.show();
   });
 
-  mainWindow.on("closed", () => (mainWindow = null));
+  mainWindow.once("closed", () => {
+    mainWindow = null;
+    WebSocketIpc.cleanup();
+  });
 
   Menu.setApplicationMenu(null);
 
@@ -53,6 +62,4 @@ app.on("window-all-closed", () => {
   }
 });
 
-import fs from "fs";
-
-app.whenReady().then(initApp).catch(console.log);
+app.whenReady().then(initApp).catch(console.error);

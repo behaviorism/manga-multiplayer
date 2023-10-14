@@ -3,12 +3,50 @@
 @tailwind utilities;
 
 html,
-body {
+body,
+#root {
   height: 100%;
   width: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 input:focus {
   outline: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.max-3-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@layer components {
+  .btn {
+    @apply focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:outline-none;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-800;
+  }
+}
+
+@layer components {
+  .inpt {
+    @apply text-sm rounded-lg block w-full p-2.5 border;
+  }
+}
+
+@layer components {
+  .inpt-primary {
+    @apply bg-gray-600 border-gray-500 text-white focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400;
+  }
 }

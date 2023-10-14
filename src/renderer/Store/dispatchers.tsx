@@ -1,10 +1,15 @@
 import { Manga, Settings } from "../../types";
-import {
-  Action,
-  ActionType,
-  RemoveMangaAction,
-  SetBookmarkAction,
-} from "./reducer";
+import { Action, ActionType, SetBookmarkAction } from "./reducer";
+
+export const setRecentManga = (
+  manga: Manga,
+  dispatch: React.Dispatch<Action>
+) => {
+  dispatch({
+    type: ActionType.SetRecentManga,
+    manga,
+  });
+};
 
 export const addOrEditManga = (
   manga: Manga,
@@ -16,13 +21,10 @@ export const addOrEditManga = (
   });
 };
 
-export const removeManga = (
-  action: Omit<RemoveMangaAction, "type">,
-  dispatch: React.Dispatch<Action>
-) => {
+export const removeManga = (manga: Manga, dispatch: React.Dispatch<Action>) => {
   dispatch({
     type: ActionType.RemoveManga,
-    ...action,
+    manga,
   });
 };
 

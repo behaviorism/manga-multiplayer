@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "./src/main/main.ts",
   "scripts": {
-    "start:main": "cross-env NODE_ENV=development PORT=1212 electronmon -r ts-node/register/transpile-only .",
+    "start:main": "cross-env NODE_ENV=development PORT=1211 electronmon -r ts-node/register/transpile-only .",
     "start:renderer": "cross-env NODE_ENV=development PORT=1212 webpack serve --config ./configs/webpack.config.renderer.ts",
+    "start:main2": "cross-env NODE_ENV=development PORT=1213 electronmon -r ts-node/register/transpile-only .",
+    "start:renderer2": "cross-env NODE_ENV=development PORT=1214 webpack serve --config ./configs/webpack.config.renderer.ts",
     "build": "concurrently \"yarn run build:main\" \"yarn run build:renderer\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.ts",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.ts",
@@ -12,13 +14,16 @@
   },
   "dependencies": {
     "electron-store": "^8.1.0",
+    "localtunnel": "^2.0.2",
     "node-html-parser": "^6.1.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0"
+    "react-router-dom": "^6.16.0",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "@types/localtunnel": "^2.0.2",
     "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.8",
     "@types/webpack-node-externals": "^3.0.2",

@@ -6,7 +6,7 @@ const WindowControls = () => {
     window.ipc.send(IpcMessage.WindowControl, control);
 
   return (
-    <div className="window-controls flex justify-between w-[53px] my-[12px] mx-[10px]">
+    <div className="window-controls flex justify-between w-[53px] my-3 mx-[10px] absolute left-0 top-0">
       <div
         onClick={() => sendControl(WindowControl.Close)}
         className="window-control bg-[#fc615d]"

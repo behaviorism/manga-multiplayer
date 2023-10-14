@@ -6,50 +6,56 @@ import Modal from "../../Components/Modal/Modal";
 const Link = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [address, setAddress] = useState("");
+  const [url, setUrl] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!validateInput(address)) {
-      return navigate(`/connect?host=${address}`);
-    }
+    try {
+      handleValidate(url);
+      navigate(`/connect?host=${url}`);
+      event.preventDefault();
+    } catch (_error: any) {}
   };
 
-  const validateInput = (input: string) => {
-    const [ip, port] = input.split(":");
-
-    if (!/^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$/.test(ip)) {
-      return "Invalid IP address";
-    }
-
-    if (!port) {
-      return "Port is missing";
-    }
-
-    if (isNaN(parseInt(port))) {
-      return "Invalid port";
+  const handleValidate = (url: string) => {
+    try {
+      new URL(url);
+    } catch (_error: any) {
+      throw new Error("Invalid URL");
     }
   };
 
   return (
     <>
-      <div>
-        <button onClick={() => navigate("/host")}>Host</button>
-        <button onClick={() => setShowModal(true)}>Connect</button>
-      </div>
-      <Modal isOpen={showModal} setIsOpen={setShowModal}>
-        <form onSubmit={handleSubmit}>
-          <div>
-            To connect to a host, you need to provide their IP address and port
-          </div>
+      <button
+        className="btn btn-primary w-52 mb-2 my-auto"
+        onClick={() => navigate("/host")}
+      >
+        Host
+      </button>
+      <button
+        className="btn btn-primary w-52 mt-2 my-auto"
+        onClick={() => setShowModal(true)}
+      >
+        Connect
+      </button>
+      <Modal
+        title="Connect to host"
+        isOpen={showModal}
+        setIsOpen={setShowModal}
+        onClose={() => setUrl("")}
+      >
+        <form className="space-y-6 block m-0" onSubmit={handleSubmit}>
           <ValidatedInput
-            value={address}
-            setValue={setAddress}
-            validate={validateInput}
-            placeholder="192.168.1.1"
+            label="Connect URL"
+            setValue={setUrl}
+            value={url}
+            validate={handleValidate}
+            placeholder="ws://twelve-moons-swim.loca.lt"
+            required
           />
-          <button type="submit">Connect</button>
+          <button type="submit" className="w-full btn btn-primary">
+            Connect
+          </button>
         </form>
       </Modal>
     </>
