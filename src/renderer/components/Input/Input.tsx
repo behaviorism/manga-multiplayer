@@ -1,19 +1,13 @@
 import React, { useState } from "react";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  validate: (input: string) => void;
+  validate?: (input: string) => void;
   label?: string;
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ValidatedInput = ({
-  validate,
-  label,
-  value,
-  setValue,
-  ...props
-}: Props) => {
+const Input = ({ validate, label, value, setValue, ...props }: Props) => {
   const [error, setError] = useState("");
 
   const handleChange = ({
@@ -22,10 +16,12 @@ const ValidatedInput = ({
     try {
       setValue(value);
 
-      if (value) {
-        validate(value);
-      } else {
-        setError("");
+      if (validate) {
+        if (value) {
+          validate(value);
+        } else {
+          setError("");
+        }
       }
     } catch (error: any) {
       setError(error.message);
@@ -48,17 +44,18 @@ const ValidatedInput = ({
         id="input"
         value={value}
         onChange={handleChange}
-        className={
-          "inpt inpt-primary" +
-          (error
-            ? " border !text-red-900 !placeholder-red-700 focus:border-red-500 !bg-red-100 !border-red-400"
-            : "")
-        }
         {...props}
+        className={
+          "inpt inpt-primary " +
+          (error
+            ? "border text-red-900 placeholder-red-700 focus:border-red-500 bg-red-100 border-red-400 "
+            : "") +
+          props.className
+        }
       />
       {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
     </div>
   );
 };
 
-export default ValidatedInput;
+export default Input;

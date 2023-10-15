@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { PropsWithChildren, useRef } from "react";
 
-type Props = React.PropsWithChildren<{
+type Props = PropsWithChildren<{
   title?: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ const Modal = ({ children, title, isOpen, setIsOpen, onClose }: Props) => {
         className="flex items-center justify-center fixed bg-gray-900 bg-opacity-50 top-0 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-hidden md:inset-0 h-[calc(100%-1rem)] max-h-full"
         onClick={({ target }) => modalRef.current === target && handleClose()}
       >
-        <div className="overflow-y-auto relative max-h-full max-w-md rounded-lg shadow bg-gray-700">
+        <div className="border-2 border-gray-500 overflow-y-auto relative max-h-full max-w-md rounded-lg shadow bg-gray-700">
           <button
             type="button"
             className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -44,8 +44,8 @@ const Modal = ({ children, title, isOpen, setIsOpen, onClose }: Props) => {
               />
             </svg>
           </button>
-          <div className="px-6 py-6 lg:px-8">
-            <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+          <div className="px-6 py-6">
+            <h3 className="mb-4 mr-5 text-xl font-medium text-white overflow-hidden overflow-ellipsis">
               {title}
             </h3>
             {children}

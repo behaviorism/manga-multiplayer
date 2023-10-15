@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ValidatedInput from "../../Components/ValidatedInput/ValidatedInput";
+import Input from "../../Components/Input/Input";
 import Modal from "../../Components/Modal/Modal";
 
 const Link = () => {
@@ -45,7 +45,7 @@ const Link = () => {
         onClose={() => setUrl("")}
       >
         <form className="space-y-6 block m-0" onSubmit={handleSubmit}>
-          <ValidatedInput
+          <Input
             label="Connect URL"
             setValue={setUrl}
             value={url}

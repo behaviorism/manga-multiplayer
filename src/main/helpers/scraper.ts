@@ -28,8 +28,9 @@ const scrapeMangaNato = async (url: string): Promise<Manga> => {
   const cover_url = html.querySelector(".info-image img")!.getAttribute("src")!;
   const chapters = html
     .querySelectorAll(".panel-story-chapter-list a")
-    .map((element) => element.getAttribute("href")!.split("/chapter-")[1])
-    .reverse();
+    .map((element) => element.getAttribute("href")!.split("/chapter-")[1]);
+
+  chapters.reverse();
 
   return {
     url: _url,

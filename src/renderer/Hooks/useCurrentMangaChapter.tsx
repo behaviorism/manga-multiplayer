@@ -27,10 +27,6 @@ const useCurrentMangaChapter = (currentManga: Manga | null) => {
       const currentManga = currentMangaRef.current;
 
       if (currentManga) {
-        console.log(
-          currentManga.url,
-          currentManga.chapters[currentManga.bookmark!.chapterIndex]
-        );
         Promise.all([
           window.ipc
             .invoke(IpcMessage.FetchManga, currentManga.url)
@@ -49,7 +45,7 @@ const useCurrentMangaChapter = (currentManga: Manga | null) => {
           .then(() => setLoaded(true))
           .catch((error: any) => {
             console.error(error.message);
-            // fetchManga();
+            fetchManga();
           });
       }
     })();

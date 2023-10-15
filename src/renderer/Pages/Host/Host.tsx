@@ -126,10 +126,13 @@ const Host = () => {
         {settings.mangas.map((manga, i) => (
           <div
             key={i}
-            className="w-1/4 px-2 my-2"
+            className="w-1/4 px-2 my-2 hover:cursor-pointer"
             onClick={() => handleMangaClick(i)}
           >
-            <img src={manga.cover_url} />
+            <img
+              className="rounded-lg shadow border-2 border-gray-500"
+              src={manga.cover_url}
+            />
             <div className="text-white px-2 pt-2 text-xs text-center font-semibold max-3-lines">
               {manga.name}
             </div>
@@ -137,6 +140,7 @@ const Host = () => {
         ))}
       </div>
       <Modal
+        title={settings.mangas[previewedMangaIndex]?.name}
         isOpen={showMangaPreviewer}
         setIsOpen={setShowMangaPreviewer}
         onClose={() => setPreviewedMangaIndex(-1)}
@@ -149,7 +153,11 @@ const Host = () => {
           />
         )}
       </Modal>
-      <Modal isOpen={showMangaAdder} setIsOpen={setShowMangaAdder}>
+      <Modal
+        title="Add New Manga"
+        isOpen={showMangaAdder}
+        setIsOpen={setShowMangaAdder}
+      >
         <MangaAdder onSuccessfulSearch={() => setShowMangaAdder(false)} />
       </Modal>
     </>
