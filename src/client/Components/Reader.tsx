@@ -73,7 +73,8 @@ const Reader = ({
     window.addEventListener("keydown", handleKeydown);
 
     const handleTouch = (event: TouchEvent) => {
-      const isRight = event.touches[0].clientX > document.body.clientWidth / 2;
+      const isRight =
+        event.changedTouches[0].clientX > document.body.clientWidth / 2;
 
       if (isRight) {
         if (
@@ -94,11 +95,11 @@ const Reader = ({
       }
     };
 
-    window.addEventListener("touchstart", handleTouch);
+    window.addEventListener("touchend", handleTouch);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("touchstart", handleTouch);
+      window.removeEventListener("touchend", handleTouch);
     };
   }, []);
 
@@ -107,7 +108,7 @@ const Reader = ({
   return (
     <>
       <Menu onCopy={onCopy} onBack={onExit} />
-      <div className="w-100 mr-28 text-white mt-12 ml-5 font-medium text-lg self-start">
+      <div className="w-100 mr-28 text-white mt-5 ml-5 font-medium text-lg self-start">
         <span className="text-base font-medium mr-2 px-2.5 py-0.5 rounded bg-gray-700 text-blue-400 border border-blue-400">
           {manga.chapters[manga.bookmark.chapterIndex]}
         </span>
@@ -117,7 +118,7 @@ const Reader = ({
       {chapterPagesUrls.map((chapterPageUrl, i) => (
         <img
           className={
-            "max-h-[calc(100%-10rem)] max-w-[calc(100%-3rem)]" +
+            "max-h-[calc(100%-8rem)] max-w-[calc(100%-3rem)]" +
             (i !== clientCurrentPageIndex ? " hidden" : "")
           }
           key={i}

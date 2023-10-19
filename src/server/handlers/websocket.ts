@@ -113,10 +113,13 @@ export default (webSocketServer: WebSocketServer) => {
     });
 
     client.on("close", () => {
-      const room = getRoom(client.roomId);
-      removeUser(client);
-      broadCastMessage(room, WebSocketMessageType.ClientDisconnected);
-      broadcastAllWaiting(room);
+      try {
+        const room = getRoom(client.roomId);
+        removeUser(client);
+        broadCastMessage(room, WebSocketMessageType.ClientDisconnected);
+        broadcastAllWaiting(room);
+      } catch (_error) {}
+
       client.removeAllListeners();
     });
   });

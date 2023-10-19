@@ -10,7 +10,7 @@ interface Props {
 
 const Menu = ({ onAdd, onCopy, onBack, onClose }: Props) => {
   return (
-    <div className="absolute top-10 right-3 flex justify-between">
+    <div className="absolute top-5 right-3 flex justify-between">
       {onCopy && (
         <ActionIcon onClick={onCopy} width="3" height="3">
           <path

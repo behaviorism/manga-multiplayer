@@ -84,7 +84,7 @@ const Host = () => {
 
   const handleCopyRoomLink = () => {
     navigator.clipboard.writeText(
-      `${window.location.origin}/connect?room_id=${roomId!}`
+      `${window.location.origin}/#/connect?room_id=${roomId!}`
     );
   };
 
@@ -122,7 +122,7 @@ const Host = () => {
         onAdd={() => setShowMangaAdder(true)}
         onClose={handleStopHosting}
       />
-      <div className="w-100 mr-28 text-white mt-12 ml-10 font-medium text-2xl self-start">
+      <div className="w-100 mr-28 text-white mt-5 ml-10 font-medium text-2xl self-start">
         Your Library
       </div>
       <hr className="ml-5 w-[calc(100%-2.75rem)] self-start h-px my-4 border-0 bg-gray-700" />
