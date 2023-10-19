@@ -1,1 +1,2 @@
 - Add toast notifications
+- Remove mobile address bar
