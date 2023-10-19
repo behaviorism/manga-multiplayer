@@ -1,39 +1,32 @@
 {
   "name": "manga-multiplayer",
   "version": "1.0.0",
-  "main": "./src/main/main.ts",
+  "main": "./src/server/main.ts",
   "scripts": {
-    "start:main": "cross-env NODE_ENV=development PORT=1211 electronmon -r ts-node/register/transpile-only .",
-    "start:renderer": "cross-env NODE_ENV=development PORT=1212 webpack serve --config ./configs/webpack.config.renderer.ts",
-    "start:main2": "cross-env NODE_ENV=development PORT=1213 electronmon -r ts-node/register/transpile-only .",
-    "start:renderer2": "cross-env NODE_ENV=development PORT=1214 webpack serve --config ./configs/webpack.config.renderer.ts",
-    "build": "concurrently \"yarn run build:main\" \"yarn run build:renderer\"",
-    "build:main": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.main.ts",
-    "build:renderer": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.renderer.ts",
-    "package": "yarn run build && electron-builder build"
+    "dev:server": "cross-env NODE_ENV=development nodemon ./src/server/main.ts",
+    "dev:client": "cross-env NODE_ENV=development webpack serve --config ./configs/webpack.config.ts",
+    "build": "concurrently \"yarn run build:server\" \"yarn run build:client\"",
+    "build:server": "cross-env NODE_ENV=production tsc -p tsconfig.build.json",
+    "build:client": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.ts",
+    "start": "node ./dist/server/main.js"
   },
   "dependencies": {
-    "electron-store": "^8.1.0",
-    "localtunnel": "^2.0.2",
+    "express": "^4.18.2",
     "node-html-parser": "^6.1.10",
+    "nodemon": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
+    "winston": "^3.11.0",
     "ws": "^8.14.2"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
-    "@types/localtunnel": "^2.0.2",
     "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.8",
-    "@types/webpack-node-externals": "^3.0.2",
-    "browserify-fs": "^1.0.0",
     "concurrently": "^8.2.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
-    "electron": "^26.2.4",
-    "electron-builder": "^24.6.4",
-    "electronmon": "^2.0.2",
     "html-webpack-plugin": "^5.5.3",
     "postcss-loader": "^7.3.3",
     "postcss-preset-env": "^9.1.4",
@@ -49,59 +42,5 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
-  },
-  "build": {
-    "productName": "Manga Multiplayer",
-    "appId": "com.electron.MangaMultiplayer",
-    "asar": true,
-    "asarUnpack": "**\\*.{node,dll}",
-    "extraMetadata": {
-      "main": "./dist/main/main.js"
-    },
-    "files": [
-      "dist",
-      "node_modules",
-      "package.json"
-    ],
-    "mac": {
-      "target": {
-        "target": "default",
-        "arch": [
-          "arm64",
-          "x64"
-        ]
-      },
-      "type": "distribution",
-      "hardenedRuntime": true,
-      "entitlements": "assets/entitlements.mac.plist",
-      "entitlementsInherit": "assets/entitlements.mac.plist",
-      "gatekeeperAssess": false
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ]
-    },
-    "extraResources": [
-      "./assets/**"
-    ],
-    "directories": {
-      "buildResources": "assets",
-      "output": "builds"
-    }
   }
 }

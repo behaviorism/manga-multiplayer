@@ -1,6 +1,6 @@
 # Manga Multiplayer
 
-Electron based desktop application that allows multiple individuals to read manga at the same time by synchronizinig page swiping, meaning that only until all individuals are willing to move onto the next page, the reading will move forward.
+Web application that allows multiple individuals to read manga at the same time by synchronizinig page swiping, meaning that only until all individuals are willing to move onto the next page, the reading will move forward.
 
 ## Rationale
 
@@ -8,9 +8,8 @@ I tried reading manga with my girlfriend by screen sharing while I was doing the
 
 ## Specifics
 
-- Electron based (TypeScript, React and Tailwind CSS)
-- Doesn't require a server (relies on [localtunnel](https://github.com/localtunnel/localtunnel/) instead)
-- Uses a host and clients system that connect via a websocket clients to the host, who will be selecting the manga to be read
+- Uses Express, React and Tailwind CSS
+- Hosts, who will be selecting the manga to be read, can create rooms, while clients can connect to the rooms via a websocket
 - Manga are imported and sourced from websites via scraping
 - Currently supports [Manganato](https://manganato.com/) imported manga
 - 99% of styling was taken from [Flowbite](https://flowbite.com/)

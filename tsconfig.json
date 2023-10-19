@@ -6,7 +6,7 @@
     "lib": ["dom", "es2022"],
     "jsx": "react-jsx",
     "strict": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

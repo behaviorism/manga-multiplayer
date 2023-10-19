@@ -1,51 +1,29 @@
-export enum IpcMessage {
-  /* Generic messages */
-  WindowControl = "windowControl",
-
-  /* Settings messages */
-
-  // Renderer: Get full settings
-  GetSettings = "getSettings",
-  // Renderer: Set full settings
-  SetSettings = "setSettings",
-
-  /* Manga messages */
-
-  // Renderer: fetch manga
-  FetchManga = "fetchManga",
-  // Renderer: fetch manga pages
-  FetchMangaPages = "fetchMangaPages",
-  // Main: get manga currently being read in renderer
-  GetCurrentManga = "getCurrentManga",
-
-  /* WebSocket messages */
-
-  // Renderer: start websocket server in main
-  StartWebSocketServer = "startWebSocketServer",
-  // Renderer: stop websocket
-  StopWebSocketServer = "stopWebSocketServer",
-  // Main: new client connected
-  WebSocketConnected = "webSocketConnected",
-  // Main: websocket error
-  WebSocketError = "webSocketError",
-  // Main: websocket closed
-  WebSocketClose = "webSocketClose",
-  // Main: connection to websocket closed
-  WebSocketClientClose = "webSocketClientClose",
-  // Renderer: send waiting state to clients (if host)/websocket (if client)
-  WebSocketWaiting = "webSocketWaiting",
-  // Renderer: set waiting state of all clients
-  SetOthersWaiting = "setOthersWaiting",
-  // Main: get waiting state of host
-  GetWaiting = "getWaiting",
-  // fRenderer: send manga currently being read to clients
-  WebSocketCurrentManga = "webSocketCurrentManga",
+export enum Service {
+  Server = "SERVER",
+  WebSocket = "WEBSOCKET",
 }
 
-export enum WindowControl {
-  Close,
-  Minimize,
-  Maximize,
+export enum WebSocketMessageType {
+  // [From Host client to Server]: create room
+  CreateRoom,
+  // [From client tos Server]: join room request
+  JoinRoom,
+  // [From Server to client]: new client connected
+  ClientConnected,
+  // [From Server to Host client]: get current manga
+  GetHostCurrentManga,
+  // [From client to Server]: set client state to waiting
+  SetClientWaiting,
+  // [From Host client to Server]: send current manga
+  SetCurrentManga,
+  // [From Server to client]: cycle to next page/chapter
+  Forward,
+  // [From Server to client]: client disconnected
+  ClientDisconnected,
+  // [From Server to client]: all clients waiting states
+  ClientsWaitingStates,
+  // [From Server to client]: room closed
+  RoomClosed,
 }
 
 export interface Settings {
@@ -70,20 +48,73 @@ export interface Manga {
 }
 
 export type WebSocketMessage =
-  | WebSocketCurrentMangaMessage
-  | WebSocketWaitingMessage;
+  | CreateRoomMessage
+  | JoinRoomMessage
+  | GetHostCurrentMangaMessage
+  | ClientConnectedMessage
+  | ClientDisconnectedMessage
+  | SetClientWaitingMessage
+  | ClientsWaitingStatesMessage
+  | SetCurrentMangaMessage
+  | ForwardMessage
+  | RoomClosedMessage;
 
-export enum WebSocketMessageType {
-  CurrentManga,
-  Waiting,
+interface CreateRoomMessage {
+  type: WebSocketMessageType.CreateRoom;
+  content: null;
+  error?: string;
 }
 
-export interface WebSocketCurrentMangaMessage {
-  type: WebSocketMessageType.CurrentManga;
-  manga: Manga | null;
+interface JoinRoomMessage {
+  type: WebSocketMessageType.JoinRoom;
+  content: string;
+  error?: string;
 }
 
-export interface WebSocketWaitingMessage {
-  type: WebSocketMessageType.Waiting;
-  waiting: Array<boolean>;
+interface GetHostCurrentMangaMessage {
+  type: WebSocketMessageType.GetHostCurrentManga;
+  content: null;
+  error?: string;
+}
+
+interface ClientConnectedMessage {
+  type: WebSocketMessageType.ClientConnected;
+  content: null;
+  error?: string;
+}
+
+interface ClientDisconnectedMessage {
+  type: WebSocketMessageType.ClientDisconnected;
+  content: null;
+  error?: string;
+}
+
+interface SetClientWaitingMessage {
+  type: WebSocketMessageType.SetClientWaiting;
+  content: boolean;
+  error?: string;
+}
+
+interface ClientsWaitingStatesMessage {
+  type: WebSocketMessageType.ClientsWaitingStates;
+  content: Array<boolean>;
+  error?: string;
+}
+
+interface SetCurrentMangaMessage {
+  type: WebSocketMessageType.SetCurrentManga;
+  content: Manga | null;
+  error?: string;
+}
+
+interface ForwardMessage {
+  type: WebSocketMessageType.Forward;
+  content: null;
+  error?: string;
+}
+
+interface RoomClosedMessage {
+  type: WebSocketMessageType.RoomClosed;
+  content: null;
+  error?: string;
 }
