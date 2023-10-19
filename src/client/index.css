@@ -27,6 +27,19 @@ input:focus {
   overflow: hidden;
 }
 
+.Toastify__toast {
+  @apply flex items-center w-full max-w-xs p-4 mb-4 rounded-lg shadow text-gray-400 bg-gray-800;
+}
+
+.Toastify__toast-body {
+  all: unset;
+  @apply flex items-center w-full;
+}
+
+.Toastify__close-button {
+  display: none;
+}
+
 @layer components {
   .btn {
     @apply focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:outline-none;

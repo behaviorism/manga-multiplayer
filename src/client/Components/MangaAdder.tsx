@@ -4,6 +4,7 @@ import { Store } from "../Store/Store";
 import Input from "./Input";
 import Form from "./Form";
 import { apiCall } from "../Helpers/api";
+import toast from "../Helpers/toast";
 
 interface Props {
   onSuccessfulSearch?: () => void;
@@ -25,7 +26,7 @@ const MangaAdder = ({ onSuccessfulSearch }: Props) => {
       );
       onSuccessfulSearch?.();
     } catch (error: any) {
-      console.error(error.message);
+      toast.error(error.message);
     }
   };
 

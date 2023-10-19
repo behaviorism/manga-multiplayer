@@ -4,6 +4,7 @@ import { Store } from "../Store/Store";
 import ActionIcon from "./ActionIcon";
 import { Manga } from "../../types";
 import { apiCall } from "../Helpers/api";
+import toast from "../Helpers/toast";
 
 interface Props {
   manga: Manga;
@@ -21,7 +22,7 @@ const MangaPreviewer = ({ manga, onChapterSelect, onMangaRemove }: Props) => {
       const fetchedManga = await apiCall("/fetchManga", { url: manga.url });
       addOrEditManga(fetchedManga, dispatch);
     } catch (error: any) {
-      console.error(error.message);
+      toast.error(error.message);
     }
   };
 

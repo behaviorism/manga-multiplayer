@@ -2,6 +2,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { WebSocketMessage, WebSocketMessageType } from "../../types";
 import { stringifyWebSocketMessage } from "../../utils";
+import toast from "../Helpers/toast";
 
 type MessageHandlers = Array<[WebSocketMessageType, (message: any) => void]>;
 
@@ -31,27 +32,27 @@ const useWebSocketClient = (messageHandlers: MessageHandlers) => {
     ws.addEventListener(
       "open",
       () => {
-        console.info("Connected to host");
+        toast.info("Connected to server");
         heartbeat();
         setSocket(ws);
       },
       { signal: controller.signal }
     );
 
-    ws.addEventListener("error", (error) => console.error(error), {
+    ws.addEventListener("error", (error: any) => toast.error(error.message), {
       signal: controller.signal,
     });
 
     const handleGuestConnected = () => {
-      console.info("New user connected");
+      toast.info("New User connected");
     };
 
     const handleGuestDisconnected = () => {
-      console.warn("A user disconnected");
+      toast.warning("A user has disconnected");
     };
 
     const handleRoomClosed = () => {
-      console.warn("Room was closed");
+      toast.warning("Room was closed");
       cleanup();
       navigate("/link");
     };
@@ -85,7 +86,7 @@ const useWebSocketClient = (messageHandlers: MessageHandlers) => {
               messageHandler(json);
             }
           } catch (error: any) {
-            console.error(error.message);
+            toast.error(error.message);
           }
         },
         { signal: controller.signal }
@@ -101,7 +102,7 @@ const useWebSocketClient = (messageHandlers: MessageHandlers) => {
     ws.addEventListener(
       "close",
       () => {
-        console.error("Host connection closed");
+        toast.error("Host connection closed");
         cleanup();
       },
       { signal: controller.signal }

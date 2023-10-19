@@ -13,6 +13,7 @@ import {
   setRecentManga,
 } from "../Store/dispatchers";
 import { Manga, WebSocketMessage, WebSocketMessageType } from "../../types";
+import toast from "../Helpers/toast";
 
 const Connect = () => {
   const { settings, dispatch } = useContext(Store);
@@ -58,7 +59,7 @@ const Connect = () => {
   useEffect(() => {
     if (socket) {
       invoke(WebSocketMessageType.JoinRoom, roomId).catch((error) => {
-        console.error(error.message);
+        toast.error(error.message);
         navigate("/link");
       });
     }

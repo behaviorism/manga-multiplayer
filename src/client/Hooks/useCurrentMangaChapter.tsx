@@ -3,6 +3,7 @@ import { Store } from "../Store/Store";
 import { addOrEditManga, setBookmark } from "../Store/dispatchers";
 import { Manga } from "../../types";
 import { apiCall } from "../Helpers/api";
+import toast from "../Helpers/toast";
 
 const useCurrentMangaChapter = (currentManga: Manga | null) => {
   const { dispatch } = useContext(Store);
@@ -43,7 +44,7 @@ const useCurrentMangaChapter = (currentManga: Manga | null) => {
         ])
           .then(() => setLoaded(true))
           .catch((error: any) => {
-            console.error(error.message);
+            toast.error(error.message);
             fetchManga();
           });
       }

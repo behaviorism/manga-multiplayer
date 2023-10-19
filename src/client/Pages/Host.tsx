@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../Store/Store";
 import Modal from "../Components/Modal";
@@ -12,6 +12,7 @@ import Menu from "../Components/Menu";
 import { setRecentManga } from "../Store/dispatchers";
 import useWebSocketClient from "../Hooks/useWebSocketClient";
 import { WebSocketMessageType } from "../../types";
+import toast from "../Helpers/toast";
 
 const Host = () => {
   const { settings, dispatch } = useContext(Store);
@@ -45,7 +46,7 @@ const Host = () => {
       invoke<string>(WebSocketMessageType.CreateRoom)
         .then((roomId) => setRoomId(roomId))
         .catch((error) => {
-          console.error(error.message);
+          toast.error(error.message);
           navigate("/link");
         });
     }
