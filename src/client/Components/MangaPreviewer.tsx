@@ -39,7 +39,7 @@ const MangaPreviewer = ({ manga, onChapterSelect, onMangaRemove }: Props) => {
   };
 
   useEffect(() => {
-    bookmarkedChapterRef.current?.scrollIntoView({ block: "end" });
+    bookmarkedChapterRef.current?.scrollIntoView(false);
   }, []);
 
   return (
