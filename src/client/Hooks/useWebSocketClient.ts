@@ -32,7 +32,7 @@ const useWebSocketClient = (messageHandlers: MessageHandlers) => {
     ws.addEventListener(
       "open",
       () => {
-        toast.info("Connected to server");
+        toast.info("Connected to the server");
         heartbeat();
         setSocket(ws);
       },
@@ -44,7 +44,7 @@ const useWebSocketClient = (messageHandlers: MessageHandlers) => {
     });
 
     const handleGuestConnected = () => {
-      toast.info("New User connected");
+      toast.info("New user connected");
     };
 
     const handleGuestDisconnected = () => {
