@@ -94,7 +94,7 @@ const Reader = ({
       }
     };
 
-    window.addEventListener("touchend", handleTouch);
+    window.addEventListener("touchstart", handleTouch);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);

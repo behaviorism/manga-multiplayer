@@ -83,7 +83,9 @@ const Host = () => {
   };
 
   const handleCopyRoomLink = () => {
-    navigator.clipboard.writeText(roomId || "");
+    navigator.clipboard.writeText(
+      `${window.location.origin}/connect?room_id=${roomId!}`
+    );
   };
 
   if (!roomId) {
