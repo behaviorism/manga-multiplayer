@@ -21,6 +21,7 @@ const router = createHashRouter([
 
 const App = () => {
   useEffect(() => {
+    console.log("ok");
     setTimeout(() => {
       window.scrollTo(0, 1);
     });
