@@ -26,5 +26,7 @@ const ws = new WebSocketServer({ server, path: "/websocket" });
 
 webSocketHandler(ws);
 
-server.listen(1212, () => logger.info(Service.Server, "Started"));
+server.listen(process.env.PORT || 1212, () =>
+  logger.info(Service.Server, "Started")
+);
 ws.once("listening", () => logger.info(Service.WebSocket, "Started"));
