@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.use("/api", apiRouter);
 
 app.get("*", (_request, response) => {
-  response.sendFile("/index.html");
+  response.sendFile("/");
 });
 
 app.use(errorHandler);
