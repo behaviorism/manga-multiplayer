@@ -42,6 +42,12 @@ const Reader = ({
     setClientCurrentPageIndex(currentPageIndex);
   }, [currentPageIndex]);
 
+  const currentPageRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    currentPageRef.current?.scrollTo({ top: 0 });
+  }, [clientCurrentPageIndex]);
+
   useEffect(() => {
     const handleKeydown = (event: KeyboardEvent) => {
       switch (event.key) {
@@ -115,17 +121,22 @@ const Reader = ({
         {manga.name}
       </div>
       <hr className="ml-5 w-[calc(100%-2.75rem)] self-start h-px my-4 border-0 bg-gray-700" />
-      {chapterPagesUrls.map((chapterPageUrl, i) => (
-        <img
-          className={
-            "max-h-[calc(100%-8rem)] max-w-[calc(100%-3rem)]" +
-            (i !== clientCurrentPageIndex ? " hidden" : "")
-          }
-          key={i}
-          src={chapterPageUrl}
-        />
-      ))}
-      <div className="mb-3 mt-auto flex justify-center">
+      <div
+        ref={currentPageRef}
+        className="overflow-y-auto w-[calc(100%-2.5rem)] flex justify-center"
+      >
+        {chapterPagesUrls.map((chapterPageUrl, i) => (
+          <img
+            referrerPolicy="no-referrer"
+            className={
+              "h-max" + (i !== clientCurrentPageIndex ? " hidden" : "")
+            }
+            key={i}
+            src={chapterPageUrl}
+          />
+        ))}
+      </div>
+      <div className="mb-3 mt-3 flex justify-center">
         {othersWaiting.length > 0 && (
           <span
             className={

@@ -8,13 +8,13 @@ import {
   joinRoom,
   removeUser,
 } from "./rooms";
+import { stringifyWebSocketMessage } from "../../utils";
 import {
   Manga,
   Service,
   WebSocketMessage,
   WebSocketMessageType,
 } from "../../types";
-import { stringifyWebSocketMessage } from "../../utils";
 
 export interface Client extends WebSocket {
   isAlive: boolean;
@@ -113,14 +113,7 @@ export default (webSocketServer: WebSocketServer) => {
     });
 
     client.on("close", () => {
-      try {
-        const room = getRoom(client.roomId);
-        removeUser(client);
-        broadCastMessage(room, WebSocketMessageType.ClientDisconnected);
-        broadcastAllWaiting(room);
-      } catch (_error) {}
-
-      client.removeAllListeners();
+      onClientDisconnect(client);
     });
   });
 
@@ -131,7 +124,7 @@ export default (webSocketServer: WebSocketServer) => {
   setInterval(() => {
     for (let client of webSocketServer.clients as Set<Client>) {
       if (client.isAlive === false) {
-        client.removeAllListeners();
+        onClientDisconnect(client);
         return client.terminate();
       }
 
@@ -139,6 +132,18 @@ export default (webSocketServer: WebSocketServer) => {
       client.send("ping");
     }
   }, 30000);
+
+  const onClientDisconnect = (client: Client) => {
+    try {
+      const room = getRoom(client.roomId);
+      removeUser(client);
+      broadCastMessage(room, WebSocketMessageType.ClientDisconnected);
+      broadcastAllWaiting(room);
+      client.removeAllListeners();
+    } catch (error: any) {
+      logger.error(Service.WebSocket, error.message);
+    }
+  };
 
   const broadcastAllWaiting = async (room: Room) => {
     const allWaiting = getAllWaiting(room);

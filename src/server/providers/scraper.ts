@@ -24,7 +24,7 @@ const scrapeMangaNato = async (
     "https://chapmanganato.com"
   );
 
-  const response = await fetch(_url);
+  const response = await fetch(_url, { keepalive: true });
 
   const text = await response.text();
 
@@ -66,7 +66,9 @@ export const scrapeMangaPages = (url: string, chapter: string) => {
 };
 
 const scrapePagesMangaNato = async (url: string, chapter: string) => {
-  const response = await fetch(`${url}/chapter-${chapter}`);
+  const response = await fetch(`${url}/chapter-${chapter}`, {
+    keepalive: true,
+  });
 
   const text = await response.text();
 
@@ -83,6 +85,8 @@ const scrapePagesMangaNato = async (url: string, chapter: string) => {
   return await Promise.all(
     pagesUrls.map(async (pageUrl) => {
       const response = await fetch(pageUrl, {
+        keepalive: true,
+        cache: "force-cache",
         headers: { referer: "https://chapmanganato.com/" },
       });
       return `data:${response.headers.get("Content-Type")};base64,${Buffer.from(
