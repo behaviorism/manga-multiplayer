@@ -55,7 +55,7 @@ const configuration: webpack.Configuration = {
         exclude: /\.module\.s?(c|a)ss$/,
       },
       {
-        test: /\.(png|jpg|jpeg|gif)$/i,
+        test: /\.(png|jpg|jpeg|gif|ico)$/i,
         type: "asset/resource",
       },
     ],
@@ -69,6 +69,7 @@ const configuration: webpack.Configuration = {
     ...(isDev ? [new ReactRefreshWebpackPlugin()] : []),
     new HtmlWebpackPlugin({
       filename: "index.html",
+      favicon: path.join(root, "src", "public", "favicon.ico"),
       template: path.join(root, "src", "public", "index.html"),
     }),
   ],
