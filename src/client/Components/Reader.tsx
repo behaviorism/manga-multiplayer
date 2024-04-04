@@ -48,6 +48,8 @@ const Reader = ({
     currentPageRef.current?.scrollTo({ top: 0 });
   }, [clientCurrentPageIndex]);
 
+  const pressTimeRef = useRef(0)
+
   useEffect(() => {
     const handleKeydown = (event: KeyboardEvent) => {
       switch (event.key) {
@@ -78,12 +80,10 @@ const Reader = ({
 
     window.addEventListener("keydown", handleKeydown);
 
-    const [pressTime, setPressTime] = useState(0);
-
-    const handleTouchStart = () => setPressTime(Date.now());
+    const handleTouchStart = () => pressTimeRef.current = Date.now();
 
     const handleTouchEnd = (event: TouchEvent) => {
-      const isScroll = (Date.now() - pressTime) > 300;
+      const isScroll = (Date.now() - pressTimeRef.current) > 300;
 
       if (isScroll) {
         return;
