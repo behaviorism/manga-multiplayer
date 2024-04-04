@@ -78,7 +78,17 @@ const Reader = ({
 
     window.addEventListener("keydown", handleKeydown);
 
-    const handleTouch = (event: TouchEvent) => {
+    const [pressTime, setPressTime] = useState(0);
+
+    const handleTouchStart = () => setPressTime(Date.now());
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      const isScroll = (Date.now() - pressTime) > 300;
+
+      if (isScroll) {
+        return;
+      }
+
       const isRight =
         event.changedTouches[0].clientX > document.body.clientWidth / 2;
 
@@ -101,11 +111,13 @@ const Reader = ({
       }
     };
 
-    window.addEventListener("touchend", handleTouch);
+    window.addEventListener("touchstart", handleTouchStart)
+    window.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("touchend", handleTouch);
+      window.removeEventListener("touchstart", handleTouchStart)
+      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
 
