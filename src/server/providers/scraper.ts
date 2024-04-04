@@ -7,7 +7,7 @@ export const scrapeManga = (url: string) => {
 
   switch (hostname) {
     case "manganato.com":
-    case "chapmanganato.com":
+    case "chapmanganato.to":
       return scrapeMangaNato(url);
     case "mangatoto.com":
       throw new BadRequestError(`Site: "${hostname}" is not implemented yet`);
@@ -21,7 +21,7 @@ const scrapeMangaNato = async (
 ): Promise<Omit<Manga, "bookmark">> => {
   const _url = url.replace(
     "https://manganato.com",
-    "https://chapmanganato.com"
+    "https://chapmanganato.to"
   );
 
   const response = await fetch(_url, { keepalive: true });
@@ -56,7 +56,7 @@ export const scrapeMangaPages = (url: string, chapter: string) => {
 
   switch (hostname) {
     case "manganato.com":
-    case "chapmanganato.com":
+    case "chapmanganato.to":
       return scrapePagesMangaNato(url, chapter);
     case "mangatoto.com":
       throw new BadRequestError("Site not implemented yet");
@@ -87,7 +87,7 @@ const scrapePagesMangaNato = async (url: string, chapter: string) => {
       const response = await fetch(pageUrl, {
         keepalive: true,
         cache: "force-cache",
-        headers: { referer: "https://chapmanganato.com/" },
+        headers: { referer: "https://chapmanganato.to/" },
       });
       return `data:${response.headers.get("Content-Type")};base64,${Buffer.from(
         await response.arrayBuffer()
