@@ -83,7 +83,7 @@ const Reader = ({
     const handleTouchStart = () => pressTimeRef.current = Date.now();
 
     const handleTouchEnd = (event: TouchEvent) => {
-      const isScroll = (Date.now() - pressTimeRef.current) > 300;
+      const isScroll = (Date.now() - pressTimeRef.current) > 100;
 
       if (isScroll) {
         return;
