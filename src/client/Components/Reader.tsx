@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Manga } from "../../types";
 import Menu from "./Menu";
+import useTappable from "../Hooks/useTappable";
 
 interface Props {
   toggleWaiting: () => void;
@@ -48,8 +49,6 @@ const Reader = ({
     currentPageRef.current?.scrollTo({ top: 0 });
   }, [clientCurrentPageIndex]);
 
-  const pressTimeRef = useRef(0)
-
   useEffect(() => {
     const handleKeydown = (event: KeyboardEvent) => {
       switch (event.key) {
@@ -80,46 +79,36 @@ const Reader = ({
 
     window.addEventListener("keydown", handleKeydown);
 
-    const handleTouchStart = () => pressTimeRef.current = Date.now();
-
-    const handleTouchEnd = (event: TouchEvent) => {
-      const isScroll = (Date.now() - pressTimeRef.current) > 100;
-
-      if (isScroll) {
-        return;
-      }
-
-      const isRight =
-        event.changedTouches[0].clientX > document.body.clientWidth / 2;
-
-      if (isRight) {
-        if (
-          refs.current.clientCurrentPageIndex === refs.current.currentPageIndex
-        ) {
-          toggleWaiting();
-        } else {
-          refs.current.setClientCurrentPageIndex(
-            refs.current.clientCurrentPageIndex + 1
-          );
-        }
-      } else {
-        if (refs.current.clientCurrentPageIndex > 0) {
-          refs.current.setClientCurrentPageIndex(
-            refs.current.clientCurrentPageIndex - 1
-          );
-        }
-      }
-    };
-
-    window.addEventListener("touchstart", handleTouchStart)
-    window.addEventListener("touchend", handleTouchEnd);
-
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("touchstart", handleTouchStart)
-      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, []);
+
+  
+  const handleTap = (event: React.TouchEvent<HTMLDivElement>) => {
+    const isRight =
+      event.changedTouches[0].clientX > document.body.clientWidth / 2;
+
+    if (isRight) {
+      if (
+        refs.current.clientCurrentPageIndex === refs.current.currentPageIndex
+      ) {
+        toggleWaiting();
+      } else {
+        refs.current.setClientCurrentPageIndex(
+          refs.current.clientCurrentPageIndex + 1
+        );
+      }
+    } else {
+      if (refs.current.clientCurrentPageIndex > 0) {
+        refs.current.setClientCurrentPageIndex(
+          refs.current.clientCurrentPageIndex - 1
+        );
+      }
+    }
+  };
+
+  const handlers = useTappable(handleTap)
 
   const doneCount = othersWaiting.filter((isWaiting) => isWaiting).length;
 
@@ -134,6 +123,7 @@ const Reader = ({
       </div>
       <hr className="ml-5 w-[calc(100%-2.75rem)] self-start h-px my-4 border-0 bg-gray-700" />
       <div
+        {...handlers}
         ref={currentPageRef}
         className="overflow-y-auto w-[calc(100%-2.5rem)] flex justify-center"
       >
