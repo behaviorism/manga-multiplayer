@@ -45,7 +45,7 @@ export default (webSocketServer: WebSocketServer) => {
               client.send(
                 stringifyWebSocketMessage(
                   WebSocketMessageType.CreateRoom,
-                  roomId
+                  { content: roomId }
                 )
               );
               break;
@@ -63,7 +63,7 @@ export default (webSocketServer: WebSocketServer) => {
                 client.send(
                   stringifyWebSocketMessage(
                     WebSocketMessageType.SetCurrentManga,
-                    currentManga
+                    { content: currentManga }
                   )
                 );
               }
@@ -84,7 +84,7 @@ export default (webSocketServer: WebSocketServer) => {
               client.send(
                 stringifyWebSocketMessage(
                   WebSocketMessageType.GetHostCurrentManga,
-                  currentManga
+                  { content: currentManga }
                 )
               );
               break;
@@ -104,7 +104,7 @@ export default (webSocketServer: WebSocketServer) => {
               throw new Error("Invalid message type");
           }
         } catch (error: any) {
-          client.send(stringifyWebSocketMessage(json.type, error.message));
+          client.send(stringifyWebSocketMessage(json.type, { error: error.message }));
           throw error;
         }
       } catch (error: any) {
@@ -155,7 +155,7 @@ export default (webSocketServer: WebSocketServer) => {
       client.send(
         stringifyWebSocketMessage(
           WebSocketMessageType.ClientsWaitingStates,
-          waitingStates
+          { content: waitingStates }
         )
       );
     });

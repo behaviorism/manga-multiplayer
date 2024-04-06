@@ -118,7 +118,7 @@ const useWebSocketClient = (messageHandlers: MessageHandlers) => {
     type: WebSocketMessageType,
     content?: WebSocketMessage["content"]
   ) => {
-    socketRef.current?.send(stringifyWebSocketMessage(type, content));
+    socketRef.current?.send(stringifyWebSocketMessage(type, { content }));
   };
 
   const invoke = <T>(
